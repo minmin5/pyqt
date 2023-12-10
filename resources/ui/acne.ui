@@ -25,7 +25,7 @@
   <property name="windowTitle">
    <string>여드름 스캔</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="5,1,0,0,0">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="5,1,0,0">
    <item row="3" column="0">
     <widget class="QProgressBar" name="acne_progress_bar">
      <property name="sizePolicy">
@@ -68,6 +68,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(85, 170, 255);</string>
+       </property>
        <property name="text">
         <string>테스트</string>
        </property>
@@ -80,6 +83,9 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(85, 170, 255);</string>
        </property>
        <property name="text">
         <string>PushButton</string>
