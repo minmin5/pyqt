@@ -77,18 +77,26 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="to_back_btn">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="font">
+        <font>
+         <family>맑은 고딕</family>
+         <pointsize>20</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(85, 170, 255);</string>
+        <string notr="true">background-color: rgb(255, 0, 0);</string>
        </property>
        <property name="text">
-        <string>PushButton</string>
+        <string>뒤로</string>
        </property>
       </widget>
      </item>

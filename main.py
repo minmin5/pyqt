@@ -53,9 +53,13 @@ class MainWindow(QWidget):
         
         
         self.sel_ui = uic.loadUi(path.join(path.dirname(__file__), 'resources', 'ui', 'select.ui'))
+        self.sel_ui.to_back_btn.clicked.connect(self.showMain)
+        self.sel_ui.acne_scan_btn.clicked.connect(self.showAcneScan)
+        self.sel_ui.cancer_scan_btn.clicked.connect(self.showCancerScan)
         
         
         self.acne_ui = uic.loadUi(path.join(path.dirname(__file__), 'resources', 'ui', 'acne.ui'))
+        self.acne_ui.to_back_btn.clicked.connect(self.showScan)
         self.acne_ui.acne_progress_bar.setValue(0) 
         #self.acne_ui.acne_media = QGraphicsView()
         self.acne_ui.acne_media.setScene(QGraphicsScene())
@@ -67,6 +71,7 @@ class MainWindow(QWidget):
         
         
         self.result_ui = uic.loadUi(path.join(path.dirname(__file__), 'resources', 'ui', 'result.ui'))
+        self.result_ui.to_back_btn.clicked.connect(self.showMain)
         
         
         self.stacked = QStackedWidget()
@@ -80,11 +85,10 @@ class MainWindow(QWidget):
         self.setLayout(QGridLayout())
         self.layout().addWidget(self.stacked)
         
-        
-        self.sel_ui.acne_scan_btn.clicked.connect(self.showAcneScan)
-        self.sel_ui.cancer_scan_btn.clicked.connect(self.showCancerScan)
-        
         self.show()
+    
+    def showMain(self):
+        self.stacked.setCurrentIndex(0)
     
     def showResult(self):
         self.stacked.setCurrentIndex(3)
