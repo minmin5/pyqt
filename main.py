@@ -1,4 +1,4 @@
-import sys, ctypes
+import sys
 from os import path
 import typing
 from PyQt5 import (
@@ -36,9 +36,6 @@ from PyQt5.QtCore import (
     Qt,
     QSize,
 )
-
-APPID = 'com.example.myapp'
-ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APPID)
 
 class MainWindow(QWidget):
     def __init__(self) -> None:
