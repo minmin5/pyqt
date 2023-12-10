@@ -99,8 +99,8 @@ class MainWindow(QWidget):
     
     def camera(self):
         cap = cv2.VideoCapture(0)
-        # width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-        # height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        ow = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+        oh = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
         #self.acne_ui.acne_media.resize(int(width), int(height))
         #self.acne_ui.acne_media: QLabel = self.acne_ui.acne_media
         
@@ -110,7 +110,14 @@ class MainWindow(QWidget):
             if ret:
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
                 size = self.acne_ui.acne_media.size()
-                img = cv2.resize(img, (size.width(), size.height()))
+                w = size.width()
+                h = size.height()
+                if ow > oh:
+                    h = int(w * oh / ow)
+                else:
+                    w = int(h * ow / oh)
+                img = cv2.resize(img, (w, h))
+                
                 h, w, c = img.shape
                 qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
                 pixmap = QtGui.QPixmap.fromImage(qImg)
