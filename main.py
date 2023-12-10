@@ -1,6 +1,8 @@
 import sys
 from os import path
 import typing
+import cv2
+import threading
 from PyQt5 import (
     QtGui,
     uic,
@@ -40,6 +42,7 @@ from PyQt5.QtCore import (
 class MainWindow(QWidget):
     def __init__(self) -> None:
         super().__init__()
+        self.runcam = False
         self.setGeometry(0, 0, 800, 480)
         self.setMinimumSize(400, 240)
         self.center()
@@ -62,12 +65,7 @@ class MainWindow(QWidget):
         self.acne_ui.to_back_btn.clicked.connect(self.showScan)
         self.acne_ui.acne_progress_bar.setValue(0) 
         #self.acne_ui.acne_media = QGraphicsView()
-        self.acne_ui.acne_media.setScene(QGraphicsScene())
-        self.acne_ui.acne_media.scene().addPixmap(QtGui.QPixmap(path.join(path.dirname(__file__), 'resources', 'images', 'acne.png')))
-        #self.acne_ui.acne_media.fitInView(self.acne_ui.acne_media.scene().sceneRect(), Qt.KeepAspectRatio)
-        self.acne_ui.acne_media.setRenderHint(QtGui.QPainter.Antialiasing)
-        self.acne_ui.acne_media.setRenderHint(QtGui.QPainter.SmoothPixmapTransform)
-        self.acne_ui.acne_media.setRenderHint(QtGui.QPainter.TextAntialiasing)
+        
         
         
         self.result_ui = uic.loadUi(path.join(path.dirname(__file__), 'resources', 'ui', 'result.ui'))
@@ -95,12 +93,39 @@ class MainWindow(QWidget):
         print("Results")
     
     def showScan(self):
+        self.runcam = False
         self.stacked.setCurrentIndex(1)
         print("Scan")
+    
+    def camera(self):
+        cap = cv2.VideoCapture(0)
+        # width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+        # height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        #self.acne_ui.acne_media.resize(int(width), int(height))
+        #self.acne_ui.acne_media: QLabel = self.acne_ui.acne_media
+        
+        while self.runcam:
+            ret, img = cap.read()
+            
+            if ret:
+                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                size = self.acne_ui.acne_media.size()
+                img = cv2.resize(img, (size.width(), size.height()))
+                h, w, c = img.shape
+                qImg = QtGui.QImage(img.data, w, h, w*c, QtGui.QImage.Format_RGB888)
+                pixmap = QtGui.QPixmap.fromImage(qImg)
+                self.acne_ui.acne_media.setPixmap(pixmap)
+            else:
+                print('cant read frame')
+                break
+        cap.release()
+        self.acne_ui.acne_media.clear()
         
     def showAcneScan(self):
+        self.runcam = True
+        self.camth = threading.Thread(target=self.camera)
+        self.camth.start()
         self.stacked.setCurrentIndex(2)
-        print("Acne Scan")
         
     def showCancerScan(self):
         print("Cancer Scan")
@@ -140,4 +165,6 @@ if __name__ == '__main__':
     app.setWindowIcon(QIcon(path.join(path.dirname(__file__), 'resources', 'images', 'web.png')))
     window = MainWindow()
     window.setWindowTitle("Skin Cancer Detection")
-    sys.exit(app.exec_())
+    app.exec_()
+    window.runcam = False
+    sys.exit(0)
