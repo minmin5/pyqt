@@ -43,6 +43,7 @@ class MainWindow(QWidget):
         self.setGeometry(0, 0, 800, 480)
         self.setMinimumSize(400, 240)
         self.center()
+        self.showFullScreen()
         
         self.keyPressEvent = self.handleKeyPress
         
